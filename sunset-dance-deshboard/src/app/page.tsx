@@ -1,6 +1,22 @@
-import { StudentListView, MOCK_STUDENTS } from "@/features/students";
+import {
+  StudentDashboardView,
+  GetStudentsUseCase,
+  StudentRepositoryImpl,
+  StudentMockDataSource,
+} from "@/features/students";
 
-export default function Home() {
+/**
+ * Server Component (Root Page Route).
+ * Executes Use Case directly on the server for instant SSR and SEO,
+ * then hydrates the Presentation View.
+ */
+export default async function Home() {
+  // Dependency Injection on Server
+  const dataSource = new StudentMockDataSource();
+  const repository = new StudentRepositoryImpl(dataSource);
+  const getStudentsUseCase = new GetStudentsUseCase(repository);
+  const initialStudents = await getStudentsUseCase.execute();
+
   return (
     <div className="min-h-screen bg-zinc-50 font-sans dark:bg-zinc-950">
       {/* Top Navigation Bar */}
@@ -22,7 +38,7 @@ export default function Home() {
 
           <div className="flex items-center gap-3">
             <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-600 dark:bg-amber-500/20 dark:text-amber-400">
-              Autumn 2026 Batch
+              Clean Architecture + Next.js
             </span>
           </div>
         </div>
@@ -30,18 +46,17 @@ export default function Home() {
 
       {/* Main Container */}
       <main className="mx-auto max-w-7xl px-6 py-10">
-        {/* Page Title & Intro */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
             Dancers & Student Roster
           </h2>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Monitor dancer performance, attendance rates, and active dance disciplines.
+            Enterprise Clean Architecture (Domain, Data, Presentation) in Feature-First Next.js.
           </p>
         </div>
 
-        {/* Feature Component (Vertical Slice) */}
-        <StudentListView initialStudents={MOCK_STUDENTS} />
+        {/* Feature Presentation View with Initial SSR Data */}
+        <StudentDashboardView initialStudents={initialStudents} />
       </main>
     </div>
   );
