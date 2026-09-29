@@ -11,6 +11,7 @@ import {
   Settings,
   LogOut,
   Sparkles,
+  Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,6 +22,7 @@ const NAV_ITEMS = [
   { label: "Classes & Schedule", href: "/dashboard/classes", icon: CalendarDays },
   { label: "Payments", href: "/dashboard/payments", icon: CreditCard },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
+  { label: "Website (Probashi)", href: "/dashboard/website", icon: Globe },
 ];
 
 export function Sidebar() {
